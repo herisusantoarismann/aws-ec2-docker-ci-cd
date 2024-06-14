@@ -49,6 +49,8 @@ jobs:
       - name: Prepare SSH Key & Copy docker compose
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > ci-cd.pem
+          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}" > .env
+          echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
           chmod 400 ci-cd.pem
 
       - name: Login to AWS ECR and Pull Docker Image
