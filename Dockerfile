@@ -6,22 +6,17 @@ WORKDIR /app
 
 # Copy package.json dan install dependencies
 COPY package*.json ./
-RUN npm install
+RUN yarn cache clean
+RUN yarn install --no-lockfile --timeout 1000000
 
 # Copy seluruh kode aplikasi ke dalam container
 COPY . .
 
 # Build aplikasi menggunakan Vite
-RUN npm run build
+RUN yarn build
 
-# Gunakan image nginx sebagai base image untuk tahap produksi
-FROM nginx:alpine
+# Ekspose port 5173 untuk mengakses aplikasi
+EXPOSE 5173
 
-# Copy build output dari tahap build ke direktori nginx
-COPY --from=build /app/dist /usr/share/nginx/html
-
-# Ekspose port 80 untuk mengakses aplikasi
-EXPOSE 80
-
-# Jalankan nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Jalankan 
+CMD ["yarn", "start", "--hostname", "0.0.0.0"]
