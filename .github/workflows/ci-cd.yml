@@ -50,9 +50,6 @@ jobs:
         run: |
           echo "${{ secrets.EC2_SSH_KEY }}" > ci-cd.pem
           chmod 400 ci-cd.pem
-
-      - name: Copy docker-compose.yml to EC2
-        run: |
           scp -i ci-cd.pem docker-compose.yml ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:~/docker-compose.yml
 
       - name: Login to AWS ECR and Pull Docker Image
