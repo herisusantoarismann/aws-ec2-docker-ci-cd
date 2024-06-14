@@ -5,8 +5,8 @@ FROM node:18-alpine AS build
 WORKDIR /app
 
 # Copy package.json dan install dependencies
-RUN npm install
 COPY package*.json ./
+RUN npm install
 
 # Copy seluruh kode aplikasi ke dalam container
 COPY . .
