@@ -15,7 +15,7 @@ COPY . .
 RUN npm run build
 
 # Expose port aplikasi
-EXPOSE 80
+EXPOSE 4173
 
 # Command untuk menjalankan aplikasi
 CMD ["npm", "run", "preview"]
