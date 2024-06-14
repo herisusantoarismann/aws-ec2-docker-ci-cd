@@ -20,8 +20,6 @@ FROM nginx:alpine
 # Copy build output dari tahap build ke direktori nginx
 COPY --from=build /app/dist /usr/share/nginx/html
 
-COPY nginx.conf /etc/nginx/nginx.conf
-
 # Ekspose port 80 untuk mengakses aplikasi
 EXPOSE 4173
 
