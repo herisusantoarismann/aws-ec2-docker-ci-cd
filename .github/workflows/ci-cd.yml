@@ -44,7 +44,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/ci-cd:latest
-          file: ./Dockerfile
+          file: ./DockerFile
 
       - name: Deploy to EC2
         env:
