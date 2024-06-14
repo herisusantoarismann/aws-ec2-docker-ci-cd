@@ -56,7 +56,7 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
           AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
         run: |
-          ssh -i ci-cd.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
+          ssh -o StrictHostKeyChecking=no -i ci-cd.pem ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} << 'EOF'
             AWS_REGION=${{ secrets.AWS_REGION }}
             AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}
 
