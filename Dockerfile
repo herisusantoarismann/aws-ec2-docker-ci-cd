@@ -14,7 +14,16 @@ COPY . .
 # Build aplikasi menggunakan Vite
 RUN npm run build
 
-# Ekspose port 80 untuk mengakses aplikasi
-EXPOSE 80
+# Gunakan image nginx sebagai base image untuk tahap produksi
+FROM nginx:alpine
 
-CMD [ "npm", "run", "dev" ]
+# Copy build output dari tahap build ke direktori nginx
+COPY --from=build /app/dist /usr/share/nginx/html
+
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Ekspose port 80 untuk mengakses aplikasi
+EXPOSE 4173
+
+# Jalankan nginx
+CMD ["nginx", "-g", "daemon off;"]
