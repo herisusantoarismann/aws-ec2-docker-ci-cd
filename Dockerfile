@@ -21,7 +21,7 @@ FROM nginx:alpine
 COPY --from=build /app/dist /usr/share/nginx/html
 
 # Ekspose port 80 untuk mengakses aplikasi
-EXPOSE 4173
+EXPOSE 80
 
 # Jalankan nginx
 CMD ["nginx", "-g", "daemon off;"]
