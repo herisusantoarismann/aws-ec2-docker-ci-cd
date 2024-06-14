@@ -48,7 +48,7 @@ jobs:
 
       - name: Prepare deployment files
         run: |
-          echo "${{ secrets.AWS_ACCOUNT_ID }}" > .env
+          echo "AWS_ACCOUNT_ID=${{ secrets.AWS_ACCOUNT_ID }}" > .env
           echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env
 
       - name: Upload Docker Compose and .env to EC2
