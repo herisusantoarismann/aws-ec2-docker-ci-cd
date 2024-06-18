@@ -6,8 +6,7 @@ WORKDIR /app
 
 # Copy package.json dan install dependencies
 COPY package*.json ./
-RUN yarn cache clean
-RUN yarn install --no-lockfile --timeout 1000000
+RUN yarn install --frozen-lockfile --network-timeout 1000000
 
 # Copy seluruh kode aplikasi ke dalam container
 COPY . .
@@ -15,8 +14,20 @@ COPY . .
 # Build aplikasi menggunakan Vite
 RUN yarn build
 
-# Ekspose port 5173 untuk mengakses aplikasi
-EXPOSE 5173
+# Install serve untuk menyajikan aplikasi
+RUN yarn global add serve
 
-# Jalankan 
-CMD ["yarn", "start", "--hostname", "0.0.0.0"]
+# Tahap akhir: gunakan image node untuk menjalankan aplikasi
+FROM node:18-alpine
+
+# Tentukan direktori kerja di dalam container
+WORKDIR /app
+
+# Copy build output dari tahap pertama ke direktori kerja
+COPY --from=build /app .
+
+# Ekspose port 3000 untuk mengakses aplikasi
+EXPOSE 3000
+
+# Jalankan serve untuk menyajikan aplikasi build
+CMD ["serve", "-s", "dist", "-l", "3000"]
