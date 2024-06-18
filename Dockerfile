@@ -4,9 +4,10 @@ FROM node:18-alpine AS build
 # Tentukan direktori kerja di dalam container
 WORKDIR /app
 
-# Copy package.json dan yarn.lock, lalu install dependencies
-COPY package*.json yarn.lock ./
-RUN yarn install --frozen-lockfile --network-timeout 1000000
+# Copy package.json dan install dependencies
+COPY package*.json ./
+RUN yarn cache clean
+RUN yarn install --no-lockfile --timeout 1000000
 
 # Copy seluruh kode aplikasi ke dalam container
 COPY . .
@@ -14,17 +15,17 @@ COPY . .
 # Build aplikasi menggunakan Vite
 RUN yarn build
 
-# Tahap akhir: gunakan image node untuk menjalankan aplikasi
-FROM node:18-alpine
+# Gunakan image nginx sebagai base image untuk tahap kedua
+FROM nginx:alpine
 
-# Tentukan direktori kerja di dalam container
-WORKDIR /app
+# Copy build hasil dari tahap pertama ke direktori default Nginx
+COPY --from=build /app/dist /usr/share/nginx/html
 
-# Copy build output dari tahap pertama ke direktori kerja
-COPY --from=build /app .
+# Copy konfigurasi Nginx custom
+COPY nginx.conf /etc/nginx/nginx.conf
 
-# Ekspose port 3000 untuk mengakses aplikasi
-EXPOSE 3000
+# Ekspose port 80 untuk mengakses aplikasi
+EXPOSE 80
 
-# Jalankan serve untuk menyajikan aplikasi build
-CMD ["yarn", "serve"]
+# Jalankan Nginx
+CMD ["nginx", "-g", "daemon off;"]
