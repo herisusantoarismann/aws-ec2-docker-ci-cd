@@ -1,10 +1,9 @@
-version: "3.8"
+version: "3"
 
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  app:
+    container_name: ci-cd-app
+    image: 828705406551.dkr.ecr.ap-southeast-1.amazonaws.com/ci-cd
     ports:
       - "80:80"
     restart: always
